@@ -24,6 +24,8 @@ Resources:
       EventInvokeConfig:
         MaximumEventAgeInSeconds: 21600
         MaximumRetryAttempts: 2
+      Layers:
+        - !Ref Layer1
       PackageType: Zip
       Policies:
         - Statement:
@@ -40,5 +42,48 @@ Resources:
       RecursiveLoop: Terminate
       SnapStart:
         ApplyOn: None
+      Events:
+        BucketEvent1:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: Bucket1
+            Events:
+              - s3:ObjectCreated:*
       RuntimeManagementConfig:
         UpdateRuntimeOn: Auto
+  Bucket1:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  BucketPolicy1:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: Bucket1
+      PolicyDocument:
+        Statement:
+          - Action: s3:*
+            Effect: Deny
+            Principal: '*'
+            Resource:
+              - arn:aws:s3:::Bucket1/*
+              - arn:aws:s3:::Bucket1
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+  # This resource represents your Layer with name checkvar-python-dependencies.
+# To download the content of your Layer, go to
+# 
+# aws.amazon.com/go/view?arn=arn%3Aaws%3Alambda%3Aap-east-1%3A767828736780%3Alayer%3Acheckvar-python-dependencies%3A1&source=lambda
+  Layer1:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./checkvar-python-dependencies
+      LayerName: checkvar-python-dependencies
+      CompatibleRuntimes:
+        - python3.12
