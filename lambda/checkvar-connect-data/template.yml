@@ -24,7 +24,7 @@ Resources:
       Environment:
         Variables:
           MONGODB_URI: >-
-            mongodb+srv://nguyenminhquan042004:XwyKqpA9NSYRx0Ne@checkvarcluster0.aqi7i.mongodb.net/?retryWrites=true&w=majority&appName=CheckvarCluster0
+            MONGODB_URI: !Sub '{{resolve:ssm:/sao-ke/MONGODB_URI}}'
       EventInvokeConfig:
         MaximumEventAgeInSeconds: 21600
         MaximumRetryAttempts: 2
