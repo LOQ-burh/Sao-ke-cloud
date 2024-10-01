@@ -46,8 +46,7 @@ Resources:
         BucketEvent1:
           Type: S3
           Properties:
-            Bucket:
-              Ref: Bucket1
+            Bucket: !Ref Bucket1
             Events:
               - s3:ObjectCreated:*
       RuntimeManagementConfig:
@@ -77,9 +76,9 @@ Resources:
               Bool:
                 aws:SecureTransport: false
   # This resource represents your Layer with name checkvar-python-dependencies.
-# To download the content of your Layer, go to
-# 
-# aws.amazon.com/go/view?arn=arn%3Aaws%3Alambda%3Aap-east-1%3A767828736780%3Alayer%3Acheckvar-python-dependencies%3A1&source=lambda
+  # To download the content of your Layer, go to
+  #
+  # aws.amazon.com/go/view?arn=arn%3Aaws%3Alambda%3Aap-east-1%3A767828736780%3Alayer%3Acheckvar-python-dependencies%3A1&source=lambda
   Layer1:
     Type: AWS::Serverless::LayerVersion
     Properties:
